@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VANTA WebControl</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#080810;color:white;
+ font-family:Arial,sans-serif;
+ padding:22px;
+}
+.container{max-width:440px;margin:auto}
+.logo{
+ text-align:center;font-size:32px;
+ font-weight:900;letter-spacing:5px;
+ color:#a855f7;margin-top:35px;
+}
+.sub{text-align:center;color:#888;font-size:12px}
+.card{
+ background:#131321;border:1px solid #302044;
+ border-radius:16px;padding:20px;
+ margin-top:22px;
+}
+.status{text-align:center;margin:15px}
+.dot{
+ display:inline-block;width:9px;height:9px;
+ border-radius:50%;background:#777;margin-right:8px
+}
+button{
+ width:100%;padding:15px;border:0;
+ border-radius:10px;font-weight:bold;
+ margin-top:10px;font-size:14px;
+}
+.connect{background:#9333ea;color:white}
+.disconnect{background:#292938;color:white}
+.test{background:#25253b;color:white}
+input{
+ width:100%;padding:13px;margin-top:10px;
+ border:1px solid #39304c;border-radius:9px;
+ background:#090914;color:white;
+}
+small{color:#888}
+.footer{text-align:center;color:#666;margin-top:25px;font-size:11px}
+</style>
+</head>
+<body>
+<div class="container">
+ <div class="logo">VANTA</div>
+ <div class="sub">WEB CONTROL • VERSION 1.0</div>
+
+ <div class="card">
+  <h3>CONNECTION</h3>
+  <div class="status">
+   <span class="dot" id="dot"></span>
+   <span id="status">DISCONNECTED</span>
+  </div>
+  <button class="connect" onclick="connect()">CONNECT</button>
+  <button class="disconnect" onclick="disconnect()">DISCONNECT</button>
+ </div>
+
+ <div class="card">
+  <h3>PROXY SETTINGS</h3>
+  <small>Endereço do servidor</small>
+  <input id="host" placeholder="proxy.exemplo.com">
+  <small>Porta</small>
+  <input id="port" type="number" placeholder="8080">
+  <button class="test" onclick="testProxy()">TEST CONNECTION</button>
+  <p id="result" style="font-size:12px;color:#aaa"></p>
+ </div>
+
+ <div class="card">
+  <h3>SYSTEM INFORMATION</h3>
+  <p>Panel: <b>VANTA v1.0</b></p>
+  <p>Browser: <b id="browser">Detecting...</b></p>
+  <p>Proxy: <b id="proxy">Not configured</b></p>
+ </div>
+ <div class="footer">VANTA TEAM • WEB CONTROL</div>
+</div>
+
+<script>
+let connected=false;
+
+function update(){
+ document.getElementById("status").textContent=
+ connected?"PANEL ACTIVE":"DISCONNECTED";
+ document.getElementById("dot").style.background=
+ connected?"#22c55e":"#777";
+}
+
+function connect(){
+ connected=true;
+ update();
+ document.getElementById("result").textContent=
+ "Painel ativado. Isso não significa que o proxy esteja conectado.";
+}
+
+function disconnect(){
+ connected=false;
+ update();
+ document.getElementById("result").textContent=
+ "Painel desconectado.";
+}
+
+async function testProxy(){
+ const host=document.getElementById("host").value.trim();
+ const port=document.getElementById("port").value.trim();
+ const result=document.getElementById("result");
+
+ if(!host||!port){
+  result.textContent="Informe o endereço e a porta.";
+  return;
+ }
+
+ result.textContent=
+ "O navegador não pode testar diretamente um proxy TCP/SOCKS5. É necessário um serviço de teste compatível.";
+
+ document.getElementById("proxy").textContent=
+ host+":"+port;
+}
+
+document.getElementById("browser").textContent=
+ navigator.userAgent.includes("Android")?"Android":"Browser";
+</script>
+</body>
+</html>
